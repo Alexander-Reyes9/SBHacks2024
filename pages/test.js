@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
+/**@type {import('socket.io-client').Socket}*/
 let socket;
 
 const test = () => {
@@ -9,8 +10,11 @@ const test = () => {
             await fetch('/api/socket');
             socket = io();
     
-            socket.on('connect', () => console.log('connected!'));
-    
+            socket.on('connect', () => {
+                console.log('Connected!');
+            });
+
+            
             socket.on('message', message => {
                 setThing(message);
             });
