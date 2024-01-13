@@ -14,14 +14,15 @@ const SocketHandler = (req, res) => {
             
             //* Matching algorithm here, but until then, match to first available user
             if(io.sockets.adapter.rooms.get('waiting') && io.sockets.adapter.rooms.get('waiting').size >= 1) {
-                io.in('waiting').fetchSockets().then(sockets => {
+                io.in('waiting').fetchSockets().then(async sockets => {
                     let otherSocket = sockets[0];
                     let roomId = `room${++i}`;
         
-                    socket.join(roomId);
+                    await socket.join(roomId);
                     otherSocket.leave('waiting');
                     otherSocket.join(roomId);
                     connections.push({roomId, users: [otherSocket.id, socket.id], expired: false});
+                    console.log(io.sockets.adapter.rooms);
                 });
             } else socket.join('waiting');
 
@@ -35,9 +36,9 @@ const SocketHandler = (req, res) => {
                 let otherUserId = connection.users.find(e => e !== socket.id);
                 io.fetchSockets().then(sockets => {
                     let theSocketInQuestion = sockets.find(e => e.id === otherUserId);
+                    if(!theSocketInQuestion) return console.log("Other user is probably dead lmao");
                     theSocketInQuestion.leave(connection.roomID);
                     theSocketInQuestion.join('waiting');
-                    console.log(io.sockets.adapter.rooms);
                 });
 
                 //Remove from connections database
@@ -48,12 +49,14 @@ const SocketHandler = (req, res) => {
                 }, 10e3);
             });
             
-            console.log(io.sockets.adapter.rooms);
 
             socket.on('message', msg => {
+                console.log('received a message!');
                 let connection = connections.find(e =>  e.users.find(o => o == socket.id));
                 if(!connection) return console.log('No connection found!');
-                io.to(connection.roomId).emit('message', msg);
+
+                console.log('sending a message!');
+                io.to(connection.roomId).emit('message', socket.id, msg);
             });
         });
     
