@@ -7,13 +7,19 @@ import io from 'socket.io-client';
 let socket;
 
 export default function Chat() {
-    if(!localStorage.getItem('userid')) return redirect('/login');
+    const router = useRouter();
+
+    useEffect(() => {
+        if(typeof window !== "undefined" && !localStorage.getItem('userid')) {
+            router.push('/login');
+        }
+    }, []);
 
     let messages = [];
     const [formattedMessages, _updateFormattedMessages] = useState([]); 
     const updateFormattedMessages = () => _updateFormattedMessages(
         messages.map((message, i) => 
-            <Message key={i} user={message.user || 'System'} content={message.content || message}/>
+            <Message key={i} user={message.user || '[SYSTEM]'} content={message.content || message}/>
         )
     );
     const [toBeSent, setToBeSent] = useState('');
@@ -26,7 +32,22 @@ export default function Chat() {
     
             socket.on('connect', () => {
                 console.log('Connected!');
-                socket.emit('joinWaitRoom');
+                messages.push(`Connected to server, awaiting match...`);
+                updateFormattedMessages();
+                socket.emit('joinWaitRoom', localStorage.getItem('userid'));
+            });
+
+            socket.on('connectionMade', async (ids) => {
+                let theirId = ids.filter(e => e == localStorage.getItem('userid'))[0];
+                const theirData = await fetch('/api/getUserData', {
+                    body: theirId,
+                    method: "POST"
+                }).then(res => res.json());
+
+                clearChat();
+                messages.push(`You've just matched with a stranger from ${theirData.school[0].toUpperCase() + theirData.school.slice(1)} Class of ${theirData.year || '[REDACTED]'}!`);
+                messages.push(`They major in ${theirData.major || '[REDACTED]'} and they are interested in ${theirData.interests || '[REDACTED]'}.`);
+                updateFormattedMessages();
             });
             
             socket.on('message', (sender, content) => {
@@ -39,27 +60,33 @@ export default function Chat() {
         socketInitializer();
     }, []);
 
-    
+    function clearChat() {
+        messages = [];
+        updateFormattedMessages();
+    }    
 
     function onSend() {
         console.log('sent the following message: ', toBeSent);
+        setToBeSent('');
         socket.emit('message', toBeSent);
     }
 
     return (
         <div>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous"/>
-            <Navbar/> <br/>
-            <center>
-                <div className='messagebox'>
-                    <p>Send a message!</p> <br/>
-                    <input className = 'typer' onChange={newToBeSent}/>
-                    <button className='send' onClick={onSend}>Send!</button>
-                </div>
-                <div className='chatroom'>
+            <Navbar/>
+            <div className='chatpage'>
+                <div className='messageArea'>
                     {formattedMessages}
                 </div>
-            </center>
+                <div className='messagebox'>
+                    <input className = 'typer' 
+                        onKeyDown = {e => e.key.toLowerCase() === 'enter' || e.key.toLowerCase() === 'return' ? onSend() : ''} 
+                        onChange={newToBeSent}
+                        value={toBeSent}/>
+                    <button className='send' onClick={onSend}>Send!</button>
+                </div>
+            </div>
         </div>
     );
 }

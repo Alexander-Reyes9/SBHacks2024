@@ -1,4 +1,5 @@
-import React from 'react'
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 
 const SignUpPage = () => {
@@ -29,18 +30,26 @@ const SignUpPage = () => {
 
         if (password !== verifyPassword) return alert('Passwords are not the same');
         
-        const apiRes = await fetch('/api/testMongo', {body: JSON.stringify({email, password}), method:"POST"}).then(res => res.text());
+        fetch('/api/signup', {body: JSON.stringify({email, password}), method:"POST"})
+          .then(res => res.text())
+          .then(id => {
+            localStorage.setItem('userid', id);
+            window.location.href = "/profile?newUser=true";
+          }).catch(e => {
+            alert(`There's been an error: ${e}`);
+            console.error(e);
+          })
         
     }
 
   return (
     <div>
 
-        <label for="fname">Email</label><br/>
+        <label>Email</label><br/>
         <input type="email" id="email" name="email" onChange={setEmailProperly}/><br/>
-        <label for="fname">Password</label><br/>
+        <label>Password</label><br/>
         <input type="password" id="password" name="password" onChange={setPasswordProperly}/><br/>
-        <label for="fname">Verify Password</label><br/>
+        <label>Verify Password</label><br/>
         <input type="password" id="password" name="verify-password" onChange={verifyPasswordProperly}/><br/>
         <button className='button' id='button' onClick={signUp}>Sign Up</button>
 

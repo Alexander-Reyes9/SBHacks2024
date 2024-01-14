@@ -8,10 +8,14 @@ export default async (req, res) => {
     let client = await mongoclient.connect();
     let db = client.db('SBHacks2024');
 
-
-    const data = JSON.parse(req.body);
-    const insertedData = await db.collection('users').insertOne(data);   
-    const id = insertedData.insertedId.toString();
+    let data = JSON.parse(req.body);
+    let id = data['id'];
+    delete data['id'];
+    await db.collection('users').updateOne({
+        _id: new mongoclient.ObjectId(id)
+    }, {
+        $set: data
+    });
     
-    res.status(200).send(insertedData);
+    res.status(200).send('Success!');
 }

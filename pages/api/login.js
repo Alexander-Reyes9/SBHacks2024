@@ -8,14 +8,9 @@ export default async (req, res) => {
     let client = await mongoclient.connect();
     let db = client.db('SBHacks2024');
 
-    console.log(req.body);
-
     const data = JSON.parse(req.body);
-    const insertedData = await db.collection('users').insertOne(data);   
-    console.log(insertedData);
-    const id = insertedData.insertedId.toString();
+    const dbres = await db.collection('users').find({ email: data.email, password: data.password }).toArray();
     
-    console.log(id);
-
-    res.status(200).send(insertedData);
+    if(dbres.length > 0) res.status(200).send(dbres[0]._id);
+    else res.status(400).send("Error: invalid credential");
 }

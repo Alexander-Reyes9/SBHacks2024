@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState } from 'react';
-import mongoclient from '../lib/mongodb';
 
 const LoginPage = () => {
 
@@ -15,10 +14,15 @@ const LoginPage = () => {
         setPassword(event.target.value);
     }
 
-    const logIn = async () => {
-        console.log(email);
-
-        await fetch('/api/login', {body: JSON.stringify({email, password}), method:"GET"});  
+    const logIn = () => {
+        fetch('/api/login', {
+            body: JSON.stringify({email, password}),
+            method:"POST"
+        }).then(res => res.text())
+        .then(id => {
+            localStorage.setItem('userid', id);
+            window.location.href = '/';
+        }).catch(e => alert(e));
     }
     
 
