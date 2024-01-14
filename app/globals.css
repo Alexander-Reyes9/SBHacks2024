@@ -1,17 +1,49 @@
-.navbar {
-  border-bottom: 2px;
-  background-color: rgba(230, 215, 215, 0.877);
-  overflow: hidden;
+* {
+  background-color: bisque;
 }
 
+.navbar {
+  border-bottom: 2px solid black;
+  background-color: rgba(230, 215, 215, 0.877);
+  overflow: hidden;
+  display: inline-block;
+  margin: 0 auto;
+}   
+
 ul {
-  padding:50px;
+  padding:10px;
   list-style-type: none;
   display: inline;
   justify-content: space-between;
+  background-color: rgba(230, 215, 215, 0.877);
+  border-radius: 10px;
 }
 
 a:hover {
   background-color: black;
   color: white;
+}
+
+button {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: dodgerblue;
+  color: white;
+  border-radius: 10px; 
+}
+
+button:hover {
+  color: black;
+  background-color: yellow;
+}
+
+a {
+  padding: 4px;
+  border-radius: 20px;
+  background-color: dodgerblue;
+  color: black;
+  border-radius: 10px;
+}
+
+input {
+  background-color: white;
 }
