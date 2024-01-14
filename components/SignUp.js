@@ -34,7 +34,7 @@ const SignUpPage = () => {
           .then(res => res.text())
           .then(id => {
             localStorage.setItem('userid', id);
-            window.location.href = "/";
+            window.location.href = "/profile?newUser=true";
           }).catch(e => {
             alert(`There's been an error: ${e}`);
             console.error(e);

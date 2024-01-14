@@ -11,7 +11,7 @@
   position: absolute;
 }   
 
-ul {
+.navbar ul {
   padding:10px;
   list-style-type: none;
   display: inline;
@@ -20,21 +20,26 @@ ul {
   border-radius: 10px;
 }
 
+.navbar a {
+  color: black;
+}
+
 a:hover {
   background-color: black;
   color: white;
 }
 
-button {
+.siteButtons {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: dodgerblue;
+  background-color: #1e90ff;
   color: white;
+  border: 0px;
   border-radius: 10px; 
+  margin: 20px;
 }
 
 button:hover {
-  color: black;
-  background-color: yellow;
+  background-color: #006ad5;
 }
 
 a {
@@ -49,3 +54,23 @@ input {
   background-color: white;
 }
 
+.messageBox {
+  position: absolute;
+  bottom: 0px;
+}
+
+.chatpage {
+  padding-left: 10%;
+  height: 75vh;
+  display: flex;
+  flex-direction:column;
+  justify-content: space-between;
+}
+
+.typer {
+  width:50%;
+}
+
+input:focus {
+  outline: none;
+}
