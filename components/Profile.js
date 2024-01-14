@@ -24,7 +24,7 @@ const Profile = () => {
           <label for="pronouns">Pronouns</label><br/>
           <input type="text" onChange={setPronouns} name="pronouns"/><br/>
           <label for="race">Race</label><br/>
-          <input type="text" onChange={setRace} name="race"/><br/>
+          <input type="text" onChange={setRace} name="race"/><br/> <br/>
           <button onClick={onSubmit}>Submit</button>
         </form>
     </div>

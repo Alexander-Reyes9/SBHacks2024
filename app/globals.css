@@ -8,6 +8,7 @@
   overflow: hidden;
   display: inline-block;
   margin: 0 auto;
+  position: absolute;
 }   
 
 ul {
@@ -47,3 +48,4 @@ a {
 input {
   background-color: white;
 }
+
