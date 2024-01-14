@@ -12,6 +12,7 @@ const SocketHandler = (req, res) => {
         io.on('connect', socket => {
             console.log('User connected.');
             
+            socket.on('joinWaitRoom')
             //* Matching algorithm here, but until then, match to first available user
             if(io.sockets.adapter.rooms.get('waiting') && io.sockets.adapter.rooms.get('waiting').size >= 1) {
                 io.in('waiting').fetchSockets().then(async sockets => {

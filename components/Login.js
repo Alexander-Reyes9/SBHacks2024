@@ -24,10 +24,12 @@ const LoginPage = () => {
 
     return (
         <div>
-            <label for="fname">Email</label><br/>
-            <input type="text" id="email" name="email" onChange={setEmailProperly}/><br/>
-            <label for="fname">Password</label><br/>
-            <input type="text" id="password" name="password" onChange={setPasswordProperly}/><br/>
+        
+            <label>Email</label><br/>
+            <input type="text" id="email" name="email" onClick={setEmailProperly}/><br/>
+            <label>Password</label><br/>
+            <input type="text" id="password" name="password" onClick={setPasswordProperly}/><br/>
+
             <button className='button' id='button' onClick={logIn}>Login</button>
 
         </div>
