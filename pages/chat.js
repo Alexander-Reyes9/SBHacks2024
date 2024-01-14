@@ -7,7 +7,13 @@ import io from 'socket.io-client';
 let socket;
 
 export default function Chat() {
-    if(!localStorage.getItem('userid')) return redirect('/login');
+    const router = useRouter();
+
+    useEffect(() => {
+        if(typeof window !== "undefined" && !localStorage.getItem('userid')) {
+            router.push('/login');
+        }
+    }, []);
 
     let messages = [];
     const [formattedMessages, _updateFormattedMessages] = useState([]); 

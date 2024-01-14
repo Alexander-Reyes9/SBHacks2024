@@ -16,7 +16,7 @@ export default function Home() {
           Meet other college students who have similar interests
           and strike up a conversation!
         </p>
-        <img src='./Logo.jpeg' alt='logo'/>
+        <img src='Logo_t.png' alt='logo' width="50%"/>
         </center>
       </div>
     </main>
