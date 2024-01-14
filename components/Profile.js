@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react'
-import onSubmit from '../pages/api/database';
 import { useState } from 'react';
 
 const Profile = () => {
