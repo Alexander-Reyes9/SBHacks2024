@@ -50,6 +50,16 @@ export default function Chat() {
                 updateFormattedMessages();
             });
             
+            socket.on('userDisconnect', () => {
+                messages.push('The other user has disconnected. You will be moved back to the waiting room shortly.');
+                updateFormattedMessages();
+                setTimeout(() => {
+                    clearChat();
+                    messages.push(`Connected to server, awaiting match...`);
+                    updateFormattedMessages();
+                }, 4e3);
+            })
+
             socket.on('message', (sender, content) => {
                 console.log('received');
                 messages.push({user: sender == socket.id ? 'You' : 'Stranger', content});

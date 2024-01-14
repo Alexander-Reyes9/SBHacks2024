@@ -17,6 +17,9 @@ const SocketHandler = (req, res) => {
                 if(io.sockets.adapter.rooms.get('waiting') && io.sockets.adapter.rooms.get('waiting').size >= 1) {
                     io.in('waiting').fetchSockets().then(async sockets => {
                         let otherSocket = sockets[0];
+                        if(connections.find(e => e.users == [otherSocket.id, socket.id] || e.users == [socket.id, otherSocket.id])?.expired)
+                            return;
+
                         let roomId = `room${++i}`;
     
                         //This is where the match happens. After the match, send to both users each other's user information
@@ -38,6 +41,8 @@ const SocketHandler = (req, res) => {
                 if(!connection) return console.log('no connection found on disconnect');
                 
                 let otherUserId = connection.users.find(e => e !== socket.id);
+                io.to(connection.roomId).emit('userDisconnect');
+
                 io.fetchSockets().then(sockets => {
                     let theSocketInQuestion = sockets.find(e => e.id === otherUserId);
                     if(!theSocketInQuestion) return console.log("Other user is probably dead lmao");
@@ -50,7 +55,7 @@ const SocketHandler = (req, res) => {
                 setTimeout(() => {
                     let toRemove = connections.findIndex(e => e.roomId == connection.roomId);
                     connections.splice(toRemove, 1);
-                }, 10e3);
+                }, 30e3);
             });
             
 
