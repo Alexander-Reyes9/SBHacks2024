@@ -9,8 +9,12 @@ const Profile = () => {
   let [major, setMajor] = useState("");
   let [year, setYear] = useState("");
   let [interests, setInterests] = useState("");
-  let [pronouns, setPronouns] = useState("");
-  let [race, setRace] = useState("");
+
+  const onSubmit = async () => {
+    await fetch('/api/updateProfile', {method: "POST", body: {major, year, interests}});
+    
+    
+  }
 
   return (
     <div className='content'>
@@ -21,10 +25,6 @@ const Profile = () => {
           <input type="text" onChange={setYear} name="year"/><br/>
           <label for="interests">Interests</label><br/>
           <input type="text" onChange={setInterests} name="interests"/><br/>
-          <label for="pronouns">Pronouns</label><br/>
-          <input type="text" onChange={setPronouns} name="pronouns"/><br/>
-          <label for="race">Race</label><br/>
-          <input type="text" onChange={setRace} name="race"/><br/> <br/>
           <button onClick={onSubmit}>Submit</button>
         </form>
     </div>
