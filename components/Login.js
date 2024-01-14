@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-
+import mongoclient from '../lib/mongodb';
 
 const LoginPage = () => {
 
@@ -16,31 +16,11 @@ const LoginPage = () => {
     }
 
     const logIn = async () => {
-        /* 
-        Get email and password from form
-        json stringify it
-        check if it is an entry in db
-        create API endpoint getUser
-        if it is, redirect user to chat page
-        
-        
-        */
-        // console.log(email);
-        // const loginData = await fetch('/api', {body: JSON.stringify({email, password}), method:"POST"});
-        // if (!loginData) {
-        //     return alert('Username or password is incorrect.');
-        // }
+        console.log(email);
 
-        // let client = await mongoclient.connect();
-        // let db = client.db('SBHacks2024');
-        // if (!db.collections('users').includes(loginData)) {
-        //     return alert('Username or password is incorrect.');
-        // }
-
-        // console.log(req.body);
-
-        // const data = JSON.parse(req.body);
+        await fetch('/api/login', {body: JSON.stringify({email, password}), method:"GET"});  
     }
+    
 
     return (
         <div>
@@ -49,6 +29,7 @@ const LoginPage = () => {
             <input type="text" id="email" name="email" onClick={setEmailProperly}/><br/>
             <label>Password</label><br/>
             <input type="text" id="password" name="password" onClick={setPasswordProperly}/><br/>
+
             <button className='button' id='button' onClick={logIn}>Login</button>
 
         </div>
