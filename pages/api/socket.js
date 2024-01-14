@@ -17,12 +17,16 @@ const SocketHandler = (req, res) => {
                 io.in('waiting').fetchSockets().then(async sockets => {
                     let otherSocket = sockets[0];
                     let roomId = `room${++i}`;
-        
+
+                    //This is where the match happens. After the match, send to both users each other's user information
                     await socket.join(roomId);
                     otherSocket.leave('waiting');
                     otherSocket.join(roomId);
                     connections.push({roomId, users: [otherSocket.id, socket.id], expired: false});
+                    
                     console.log(io.sockets.adapter.rooms);
+
+                    io.to(roomId).emit('connectionMade');
                 });
             } else socket.join('waiting');
 
