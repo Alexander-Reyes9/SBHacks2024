@@ -44,12 +44,12 @@ const LoginPage = () => {
 
     return (
         <div>
-
-            <label for="fname">Email</label><br/>
-            <input type="text" id="email" name="email" onclick={setEmailProperly}/><br/>
-            <label for="fname">Password</label><br/>
+        
+            <label>Email</label><br/>
+            <input type="text" id="email" name="email" onClick={setEmailProperly}/><br/>
+            <label>Password</label><br/>
             <input type="text" id="password" name="password" onClick={setPasswordProperly}/><br/>
-            <button className='button' id='button' onclick={logIn}>Login</button>
+            <button className='button' id='button' onClick={logIn}>Login</button>
 
         </div>
     )

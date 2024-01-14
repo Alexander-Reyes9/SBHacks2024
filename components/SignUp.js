@@ -29,7 +29,8 @@ const SignUpPage = () => {
 
         if (password !== verifyPassword) return alert('Passwords are not the same');
         
-        await fetch('/api/testMongo', {body: JSON.stringify({email, password}), method:"POST"});
+        const apiRes = await fetch('/api/testMongo', {body: JSON.stringify({email, password}), method:"POST"}).then(res => res.text());
+        
     }
 
   return (
