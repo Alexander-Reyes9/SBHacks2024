@@ -20,6 +20,7 @@ const LoginPage = () => {
             method:"POST"
         }).then(res => res.text())
         .then(id => {
+            if(id.startsWith('Error')) throw new Error(id);
             localStorage.setItem('userid', id);
             window.location.href = '/';
         }).catch(e => alert(e));
@@ -30,9 +31,9 @@ const LoginPage = () => {
         <div>
         
             <label>Email</label><br/>
-            <input type="text" id="email" name="email" onClick={setEmailProperly}/><br/>
+            <input type="text" id="email" name="email" onChange={setEmailProperly}/><br/>
             <label>Password</label><br/>
-            <input type="text" id="password" name="password" onClick={setPasswordProperly}/><br/>
+            <input type="text" id="password" name="password" onChange={setPasswordProperly}/><br/>
 
             <button className='button' id='button' onClick={logIn}>Login</button>
 

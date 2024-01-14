@@ -38,14 +38,15 @@ export default function Chat() {
             });
 
             socket.on('connectionMade', async (ids) => {
-                let theirId = ids.filter(e => e == localStorage.getItem('userid'))[0];
+                let theirId = ids.filter(e => e !== localStorage.getItem('userid'))[0];
+                console.log(theirId);
                 const theirData = await fetch('/api/getUserData', {
                     body: theirId,
                     method: "POST"
                 }).then(res => res.json());
-
+                
                 clearChat();
-                messages.push(`You've just matched with a stranger from ${theirData.school[0].toUpperCase() + theirData.school.slice(1)} Class of ${theirData.year || '[REDACTED]'}!`);
+                messages.push(`You've just matched with a stranger from ${theirData.school?.slice(0,1).toUpperCase() + theirData.school?.slice(1)} Class of ${theirData.year || '[REDACTED]'}!`);
                 messages.push(`They major in ${theirData.major || '[REDACTED]'} and they are interested in ${theirData.interests || '[REDACTED]'}.`);
                 updateFormattedMessages();
             });
