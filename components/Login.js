@@ -26,17 +26,13 @@ const LoginPage = () => {
         }).catch(e => alert(e));
     }
     
-
     return (
         <div>
-        
             <label>Email</label><br/>
             <input type="text" id="email" name="email" onChange={setEmailProperly}/><br/>
             <label>Password</label><br/>
-            <input type="text" id="password" name="password" onChange={setPasswordProperly}/><br/>
-
+            <input type="password" id="password" name="password" onChange={setPasswordProperly}/><br/>
             <button className='button' id='button' onClick={logIn}>Login</button>
-
         </div>
     )
 }
