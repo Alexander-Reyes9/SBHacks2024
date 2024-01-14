@@ -7,6 +7,8 @@ import io from 'socket.io-client';
 let socket;
 
 export default function Chat() {
+    if(!localStorage.getItem('userid')) return redirect('/login');
+
     let messages = [];
     const [formattedMessages, _updateFormattedMessages] = useState([]); 
     const updateFormattedMessages = () => _updateFormattedMessages(
@@ -24,6 +26,7 @@ export default function Chat() {
     
             socket.on('connect', () => {
                 console.log('Connected!');
+                socket.emit('joinWaitRoom');
             });
             
             socket.on('message', (sender, content) => {
